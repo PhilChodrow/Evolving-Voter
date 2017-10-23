@@ -499,7 +499,7 @@ double Dynamic_Voter::simulate(float alpha, float beta, int mode, float gamma, i
 		// 			for (l=0;l<=11;l++)
 		// 				pFile_process<<"E"<<i<<"_"<<j<<"_"<<k<<"_"<<l<<" ";}
 		pFile_process<<endl;
-		pFile_process<<step<<" "<<action<<" ";
+		pFile_process<<alpha<<" "<<step<<" "<<action<<" ";
 		print_statistics_triple(pFile_process);}
 
 	if (!comp.empty()) {

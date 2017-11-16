@@ -1035,10 +1035,11 @@ double Dynamic_Voter::simulate(float alpha, float beta, int mode, float gamma, i
 		}
 	}
 
-	if (pFile_process.is_open()) {
-		pFile_process<<alpha<<" "<<step<<" "<<action<<" ";
-		print_statistics_triple(pFile_process);
-		pFile_process.close(); }
+    if ((long int)step%dt!=0) {
+        if (pFile_process.is_open()) {
+    		pFile_process<<alpha<<" "<<step<<" "<<action<<" ";
+    		print_statistics_triple(pFile_process);
+    		pFile_process.close(); }}
 
 	if (pFile_comp.is_open()) {
 		component();

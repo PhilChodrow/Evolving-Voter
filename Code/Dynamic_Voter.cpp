@@ -235,13 +235,14 @@ int Dynamic_Voter::mutate_state(long int pid){
     int state_after;
     vector<Node>::iterator person3_it;
     vector<Node>::iterator person1_it=population[pid].myself;
+    vector<Edge>::iterator edge_it;
 	list<vector<Edge>::iterator>::iterator neigh_edge_it;
 
     // flip this person's state
     if (person1_it->state==0)
-        state_after=1
+        state_after=1;
     else
-        state_after=0
+        state_after=0;
 	swap_delete(person1_it, sites[person1_it->state]);
 	person1_it->sites_place = sites[state_after].insert(sites[state_after].end(),person1_it);
 	person1_it->state = state_after;

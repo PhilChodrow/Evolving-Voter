@@ -166,7 +166,7 @@ bool Dynamic_Voter::swap_delete(vector<Node>::iterator person_it, vector<vector<
 	return true;
 }
 
-double Dynamic_Voter::simulate(float alpha, int dt, double max_steps, string process) {
+double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_steps, string process) {
 	long int e1;
 	double step=0;
 	int i,j,k;
@@ -193,22 +193,29 @@ double Dynamic_Voter::simulate(float alpha, int dt, double max_steps, string pro
     }
 
 	while ( (edge_boundary.empty()==false) && (max_steps<0 || step<max_steps) ) {
-		e1 = random_number.integer(edge_boundary.size());
-		edge_it=edge_boundary[e1];
-		if (random_number.real()<alpha) {
-            action=1;
-			rand_rewire(edge_it);
+        if (random_number.real()<lambda) {
+            e1 = random_number.integer(population.size());
+            action=2;
+            // mutate population[e1]
         }
-		else {
-            action=0;
-			adopt_state(edge_it);
-        }
-		step++;
+        else {
+    		e1 = random_number.integer(edge_boundary.size());
+    		edge_it=edge_boundary[e1];
+    		if (random_number.real()<alpha) {
+                action=1;
+    			rand_rewire(edge_it);
+            }
+    		else {
+                action=0;
+    			adopt_state(edge_it);
+            }
+    		step++;
 
-		if ((long int)step%dt==0) {
-            if (pFile_process.is_open()) {
-				pFile_process<<alpha<<" "<<step<<" "<<action<<" ";
-				print_statistics_triple(pFile_process);
+    		if ((long int)step%dt==0) {
+                if (pFile_process.is_open()) {
+    				pFile_process<<alpha<<" "<<step<<" "<<action<<" ";
+    				print_statistics_triple(pFile_process);
+                }
             }
         }
 	}

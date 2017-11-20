@@ -176,7 +176,7 @@ double Dynamic_Voter::simulate(float alpha, int dt, double max_steps, string pro
 
 	if (!process.empty()) {
 		pFile_process.open(process.c_str());
-		pFile_process<<"alpha step action ";
+		pFile_process<<"step action ";
 		for (j=0; j< (int)sites.size(); j++)
 			pFile_process<<"N"<<j<<" ";
 		for (i=0;i<(int)sites.size();i++)
@@ -188,7 +188,7 @@ double Dynamic_Voter::simulate(float alpha, int dt, double max_steps, string pro
 					pFile_process<<"N"<<i<<j<<k<<" ";
 		pFile_process<<endl;
 
-		pFile_process<<alpha<<" "<<step<<" "<<action<<" ";
+		pFile_process<<step<<" "<<action<<" ";
 		print_statistics_triple(pFile_process);
     }
 
@@ -207,7 +207,7 @@ double Dynamic_Voter::simulate(float alpha, int dt, double max_steps, string pro
 
 		if ((long int)step%dt==0) {
             if (pFile_process.is_open()) {
-				pFile_process<<alpha<<" "<<step<<" "<<action<<" ";
+				pFile_process<<step<<" "<<action<<" ";
 				print_statistics_triple(pFile_process);
             }
         }
@@ -215,7 +215,7 @@ double Dynamic_Voter::simulate(float alpha, int dt, double max_steps, string pro
 
     if ((long int)step%dt!=0) {
         if (pFile_process.is_open()) {
-    		pFile_process<<alpha<<" "<<step<<" "<<action<<" ";
+    		pFile_process<<step<<" "<<action<<" ";
     		print_statistics_triple(pFile_process);
     		pFile_process.close();
         }

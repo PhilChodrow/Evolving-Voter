@@ -24,6 +24,7 @@ public:
 	bool swap_delete(vector<Edge>::iterator edge_it, vector<vector<Edge>::iterator> & sites);
 	int assign_states(vector<float> &initial_density);
 	double simulate(float alpha, float lambda, int dt, double max_steps, string process);
+    int mutate_state(long int pid); // mutate node state
 	int adopt_state(vector<Edge>::iterator edge_it);
 	int rand_rewire(vector<Edge>::iterator edge_it); // rewire to random
 	void print_statistics_simple(ofstream &pFile_process); //print simulation statistics at given time point

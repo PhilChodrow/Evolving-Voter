@@ -196,7 +196,7 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
         if (random_number.real()<lambda) {
             e1 = random_number.integer(population.size());
             action=2;
-            // mutate population[e1]
+            mutate_state(e1);
         }
         else {
     		e1 = random_number.integer(edge_boundary.size());
@@ -230,6 +230,44 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 
 	return step;
 }
+
+int Dynamic_Voter::mutate_state(long int pid){
+    int state_after;
+    vector<Node>::iterator person3_it;
+    vector<Node>::iterator person1_it=population[pid].myself;
+	list<vector<Edge>::iterator>::iterator neigh_edge_it;
+
+    // flip this person's state
+    if (person1_it->state==0)
+        state_after=1
+    else
+        state_after=0
+	swap_delete(person1_it, sites[person1_it->state]);
+	person1_it->sites_place = sites[state_after].insert(sites[state_after].end(),person1_it);
+	person1_it->state = state_after;
+
+	// need to go through all of person 1's neighbors:
+	// each edge that was concordant is now discordant and vice versa
+	for (neigh_edge_it = person1_it->edge_list.begin(); neigh_edge_it!=person1_it->edge_list.end(); neigh_edge_it++) {
+		edge_it = *neigh_edge_it;
+		if (edge_it->state==0) { // "0" means that this edge was concordant
+			edge_it->state=1;
+			edge_it->boundary_place=edge_boundary.insert(edge_boundary.end(),edge_it);
+		}
+		else { // edge was discordant, it may be concordant now
+			if (edge_it->person1 == person1_it)
+				person3_it=edge_it->person2;
+			else
+				person3_it=edge_it->person1;
+			if (person1_it->state == person3_it->state){
+				edge_it->state=0;
+				swap_delete(edge_it, edge_boundary);
+            }
+        }
+    }
+	return 0;
+}
+
 
 int Dynamic_Voter::adopt_state(vector<Edge>::iterator edge_it) {
 	vector<Node>::iterator person1_it, person2_it, person3_it;

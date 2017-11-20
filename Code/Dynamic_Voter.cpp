@@ -194,11 +194,12 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 
 	while ( (edge_boundary.empty()==false) && (max_steps<0 || step<max_steps) ) {
         if (random_number.real()<lambda) {
+            //mutation model
             e1 = random_number.integer(population.size());
             action=2;
             mutate_state(e1);
         }
-        else {
+        else { //evolving voter model
     		e1 = random_number.integer(edge_boundary.size());
     		edge_it=edge_boundary[e1];
     		if (random_number.real()<alpha) {
@@ -210,12 +211,11 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
     			adopt_state(edge_it);
             }
     		step++;
-
-    		if ((long int)step%dt==0) {
-                if (pFile_process.is_open()) {
-    				pFile_process<<alpha<<" "<<step<<" "<<action<<" ";
-    				print_statistics_triple(pFile_process);
-                }
+        }
+        if ((long int)step%dt==0) {
+            if (pFile_process.is_open()) {
+                pFile_process<<alpha<<" "<<step<<" "<<action<<" ";
+                print_statistics_triple(pFile_process);
             }
         }
 	}

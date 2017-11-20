@@ -30,7 +30,7 @@ If the code is compiled as above, it can be run as `./DynamicVoter` with the fol
 ## What is the ouput?
 The program will generate two output files: evolving_voter.summary and evolving_voter.process (or any names specified as above).
 
-evolving_voter.summary has the summary information for one run. It is a whitespace delimited text file with the following columns
+evolving_voter.summary has the summary information for the simulation. It is a whitespace delimited text file with the following columns
 ```
 nodes: number of nodes
 edges: number of edges
@@ -44,7 +44,7 @@ time: clock time for the simulation
 evolving_voter.process saves system states at every step or every dt steps. It is a whitespace delimited text file with the following columns. 
 ``` 
 step: how many step has taken so far
-action: what is done in this step. 0 - adapt, 1-rewire
+action: what is done in this step. 0 - adapt, 1 - rewire, 2 - mutate
 N0: number of 0-nodes
 N1: number of 1-nodes 
 N00: number of 0-0 edges

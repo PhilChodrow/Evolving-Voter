@@ -1,11 +1,11 @@
 ## What is in here?
 
-The code directory has the cleaned code for the simplest version of the co-evolving voter model. For details on the model please see
+The `Code` directory has the minimal code for the co-evolving voter model from
 > Richard Durrett, James P. Gleeson, Alun L. Lloyd, Peter J. Mucha, Feng Shi, David Sivakoff, Joshua E. S. Socolar, and Chris Varghese; Graph fission in an evolving voter model; PNAS 2012 109 (10) 3682-3687
 
 > F Shi, PJ Mucha, R Durrett; Multiopinion coevolving voter model with infinitely many phase transitions; Physical Review E 88 (6), 062818
 
-The code implements the "rewire to random" model in the paper.
+The code implements the "rewire to random" model in the papers.
 
 ## How to compile it?
 
@@ -29,7 +29,7 @@ If the code is compiled as above, it can be run as `./DynamicVoter` with the fol
 ## What is the ouput?
 The program will generate two output files: evolving_voter.summary and evolving_voter.process (or any names specified as above).
 
-evolving_voter.summary has the summary information for one run. It is a whitespace delimited text file with the following columns
+evolving_voter.summary has the summary information for the simulation. It is a whitespace delimited text file with the following columns
 ```
 nodes: number of nodes
 edges: number of edges

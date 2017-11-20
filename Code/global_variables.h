@@ -1,15 +1,8 @@
-/*
- * global_variables.h
- *
- *  Created on: Apr 18, 2011
- *      Author: Bill
- */
-
 #ifndef GLOBAL_VARIABLES_H_
 #define GLOBAL_VARIABLES_H_
 
 #include "Random1.h"
-#include "vector"
+#include <vector>
 #include "Edge.h"
 
 Random1 random_number;

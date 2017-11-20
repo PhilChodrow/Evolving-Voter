@@ -1,10 +1,3 @@
-/*
- * Node.cpp
- *
- *  Created on: Apr 17, 2011
- *      Author: Administrator
- */
-
 #include "Node.h"
 
 Node::Node() {

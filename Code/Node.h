@@ -1,21 +1,14 @@
-/*
- * Node.h
- *
- *  Created on: Apr 17, 2011
- *      Author: Bill
- */
-
 #ifndef NODE_H_
 #define NODE_H_
 
 #include <list>
 #include <vector>
-class Edge;
 #include "Edge.h"
 using namespace std;
 
-class Node
-{
+class Edge;
+
+class Node {
 public:
 	long int ID;
 	int state;

@@ -89,7 +89,6 @@ int main(int argc, char* argv[]) {
 	outfile <<number_of_nodes<<" "<<number_of_edges<<" "<< alpha <<" ";
 	for (i=0; i<number_of_opinions; i++)
 		outfile << dv->sites[i].size() <<" ";
-	// outfile << steps <<" "<< (float)(clock()-t_start)/CLOCKS_PER_SEC <<" "<< dv->edge_boundary.size()<<" "<<dv->comp_size.size()-1<<" "<<*max_element(dv->comp_size.begin(),dv->comp_size.end())/(float)number_of_nodes<<" "<<dv->average_path_len()<<" "<<dv->clutering()<< endl;
     outfile << steps <<" "<< (float)(clock()-t_start)/CLOCKS_PER_SEC << endl;
 	delete dv;
 

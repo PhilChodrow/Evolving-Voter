@@ -27,7 +27,7 @@ double Random1::real()
 long int Random1::integer(long int n)
 {
 	long int i1;
-	while ((i1=(int)(real()*n))==n)
+	while ((i1=(long int)(real()*n))==n)
 		;
 	return i1;
 }

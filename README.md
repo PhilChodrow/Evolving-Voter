@@ -2,6 +2,9 @@
 
 The code directory has the cleaned code for the simplest version of the co-evolving voter model. For details on the model please see
 > Richard Durrett, James P. Gleeson, Alun L. Lloyd, Peter J. Mucha, Feng Shi, David Sivakoff, Joshua E. S. Socolar, and Chris Varghese; Graph fission in an evolving voter model; PNAS 2012 109 (10) 3682-3687
+
+> F Shi, PJ Mucha, R Durrett; Multiopinion coevolving voter model with infinitely many phase transitions; Physical Review E 88 (6), 062818
+
 The code implements the "rewire to random" model in the paper.
 
 ## How to compile it?
@@ -37,8 +40,7 @@ steps: how many steps are taken
 time: clock time for the simulation
 ```
 evolving_voter.process saves system states at every step or every dt steps. It is a whitespace delimited text file with the following columns. 
-```
-alpha 
+``` 
 step: how many step has taken so far
 action: what is done in this step. 0 - adapt, 1-rewire
 N0: number of 0-nodes

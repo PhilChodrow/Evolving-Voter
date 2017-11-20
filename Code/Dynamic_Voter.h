@@ -10,7 +10,7 @@ class Dynamic_Voter{
 public:
 	vector<Node> population; // list of nodes
 	vector<Edge> edges; // list of edges
-	vector<vector<vector<Node>::iterator>> sites; // list of pointers to i-nodes
+	vector<vector<vector<Node>::iterator> > sites; // list of pointers to i-nodes
 	vector<vector<Edge>::iterator> edge_boundary; // list of discordant edges
 
 public:

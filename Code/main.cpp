@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
 	// summary of the simulation
 	filename = filename + ".summary";
 
-	ofstream outfile(filename.str().c_str());
+	ofstream outfile(filename.c_str());
 	outfile << "nodes " << "edges " << "alpha " ;
 	for (i=0; i<number_of_opinions; i++)
 		outfile<<"u"<<i<<" ";
@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
 
     // create file to save the frequencies of opinions throughout the process
 	s="summary";
-	process=filename.str();
+	process=filename;
 	start_pos = process.find(s);
 	process.replace(start_pos, s.length(), "process");
 

@@ -14,12 +14,14 @@ Dynamic_Voter::Dynamic_Voter() {
 }
 
 //Generate a ER random graph with given number of nodes and edges
-int Dynamic_Voter::ER_network(long int number_of_nodes, long int number_of_edges, int number_of_opinions)
-: population(number_of_nodes), sites(number_of_opinions) {
+int Dynamic_Voter::ER_network(long int number_of_nodes, long int number_of_edges, int number_of_opinions) {
 	bool need_new_neigh;
 	long int j,i1,i2;
 	int i;
 	vector<Node>::iterator person_it;
+
+    population.resize(number_of_nodes);
+    sites.resize(number_of_opinions);
 	for(i=0;i<number_of_opinions;i++)
 		sites[i].reserve(number_of_nodes);
     edges.reserve(number_of_edges);
@@ -169,7 +171,6 @@ double Dynamic_Voter::simulate(float alpha, int dt, double max_steps, string pro
 	double step=0;
 	int i,j,k;
 	vector<Edge>::iterator edge_it;
-	bool need_new_edge = true;
 	int action=-1; //0:adapt, 1:rewire
 	ofstream pFile_process;
 
@@ -229,11 +230,10 @@ int Dynamic_Voter::adopt_state(vector<Edge>::iterator edge_it) {
 
 	person1_it = edge_it->person1;
 	person2_it = edge_it->person2;
-	// swap roles of two people
 	if (random_number.real() < 0.5) {
 		person1_it = edge_it->person2;
-		person2_it = edge_it->person1;}
-
+		person2_it = edge_it->person1;
+    }
 	// person 1 adopts the state of person 2.
 	swap_delete(person1_it, sites[person1_it->state]);
 	person1_it->sites_place = sites[person2_it->state].insert(sites[person2_it->state].end(),person1_it);
@@ -241,7 +241,7 @@ int Dynamic_Voter::adopt_state(vector<Edge>::iterator edge_it) {
 
 	// need to go through all of person 1's neighbors:
 	// each edge that was concordant is now discordant and vice versa
-	for (neigh_edge_it = person1_it->edge_list.begin(); neigh_edge_it!=person1_it->edge_list.end(); neigh_edge_it++){
+	for (neigh_edge_it = person1_it->edge_list.begin(); neigh_edge_it!=person1_it->edge_list.end(); neigh_edge_it++) {
 		edge_it = *neigh_edge_it;
 		if (edge_it->state==0) { // "0" means that this edge was concordant
 			edge_it->state=1;
@@ -257,6 +257,7 @@ int Dynamic_Voter::adopt_state(vector<Edge>::iterator edge_it) {
 				swap_delete(edge_it, edge_boundary);
             }
         }
+    }
 	return 0;
 }
 
@@ -291,7 +292,7 @@ void Dynamic_Voter::print_statistics_simple(ofstream &pFile_process) {
 }
 
 void Dynamic_Voter::print_statistics_triple(ofstream &pFile_process) {
-    int i,j,k,l;
+    int i,j,k;
 	vector<Node>::iterator person_it,person_it1,person_it2;
 	vector<Edge>::iterator edge_it;
 	list<vector<Edge>::iterator>::iterator neigh_edge_it1, neigh_edge_it2;

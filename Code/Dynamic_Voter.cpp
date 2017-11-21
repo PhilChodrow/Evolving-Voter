@@ -201,18 +201,20 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
             mutate_state(e1);
         }
         else { //evolving voter model
-    		e1 = random_number.integer(edge_boundary.size());
-    		edge_it=edge_boundary[e1];
-    		if (random_number.real()<alpha) {
-                action=1;
-    			rand_rewire(edge_it);
-            }
-    		else {
-                action=0;
-    			adopt_state(edge_it);
-            }
-    		step++;
-        }
+        	if (edge_boundary.size() > 0){
+	    		e1 = random_number.integer(edge_boundary.size());
+	    		edge_it=edge_boundary[e1];
+	    		if (random_number.real()<alpha) {
+	                action=1;
+	    			rand_rewire(edge_it);
+	            }
+	    		else {
+	                action=0;
+	    			adopt_state(edge_it);
+	            }
+	        }
+	    }
+		step++;
         if ((long int)step%dt==0) {
             if (pFile_process.is_open()) {
                 pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<<" ";

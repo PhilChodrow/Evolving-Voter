@@ -10,7 +10,7 @@ dt=1000; # save results every dt steps
 alph = np.linspace(0, 1, 201) # rewiring probability
 lam = 2.0**(-np.linspace(3, 11, 15)) # mutation rate
 g=2; # number of opinions
-max_steps = 10**6
+max_steps = 5*10**5
 realizations = np.arange(0,10)
 
 U0=1.0/g*np.ones(g,); # list of initial densities

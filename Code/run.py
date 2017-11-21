@@ -6,10 +6,10 @@ count=1;
 node=2000; # number of nodes
 c = np.arange(3, 20); # mean degree 
 dt=100; # save results every dt steps
-alph = [0.4] # rewiring probability
-lam = 2.0**(-np.arange(3, 11)) # mutation rate
+alph = np.linspace(0, 1, 201) # rewiring probability
+lam = 2.0**(-np.linspace(3, 11, 71)) # mutation rate
 g=2; # number of opinions
-max_steps = 100000
+max_steps = 10**6
 realizations = np.arange(0,2)
 
 U0=1.0/g*np.ones(g,); # list of initial densities
@@ -19,7 +19,7 @@ mode = [1]
 pars = product(realizations, mode, alph, lam, c)
 for realization, mode, alpha, lamb, cee in pars:
 
-    outfile = 'data/test_' + str(count)
+    outfile = 'data/run_' + str(count)
     edge = node*cee/2.0
 
     cmd='./bin/DynamicVoter -n {} -m {} -a {} -l {} -t {} -T {} -o {} -u {} '.format(node,edge,alpha,lamb, dt, max_steps, outfile, g);

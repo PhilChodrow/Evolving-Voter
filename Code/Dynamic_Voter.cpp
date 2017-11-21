@@ -176,7 +176,7 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 
 	if (!process.empty()) {
 		pFile_process.open(process.c_str());
-		pFile_process<<"step action ";
+		pFile_process<<"step action alpha lambda ";
 		for (j=0; j< (int)sites.size(); j++)
 			pFile_process<<"N"<<j<<" ";
 		for (i=0;i<(int)sites.size();i++)
@@ -188,11 +188,11 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 					pFile_process<<"N"<<i<<j<<k<<" ";
 		pFile_process<<endl;
 
-		pFile_process<<step<<" "<<action<<" ";
+		pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<< " ";
 		print_statistics_triple(pFile_process);
     }
 
-	while ( (edge_boundary.empty()==false) && (max_steps<0 || step<max_steps) ) {
+	while (  (max_steps<0 || step<max_steps) ) {
         if (random_number.real()<lambda) {
             //mutation model
             e1 = random_number.integer(population.size());
@@ -214,7 +214,7 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
         }
         if ((long int)step%dt==0) {
             if (pFile_process.is_open()) {
-                pFile_process<<step<<" "<<action<<" ";
+                pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<<" ";
                 print_statistics_triple(pFile_process);
             }
         }
@@ -222,7 +222,7 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 
     if ((long int)step%dt!=0) {
         if (pFile_process.is_open()) {
-    		pFile_process<<step<<" "<<action<<" ";
+    		pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<<" ";
     		print_statistics_triple(pFile_process);
     		pFile_process.close();
         }

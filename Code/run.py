@@ -4,10 +4,11 @@ from itertools import product
 
 count=1;
 node=2000; # number of nodes
-c = np.arange(3, 20); # mean degree 
+c = np.array([4, 6, 8, 20]); # mean degree 
+
 dt=1000; # save results every dt steps
 alph = np.linspace(0, 1, 201) # rewiring probability
-lam = 2.0**(-np.linspace(3, 11, 71)) # mutation rate
+lam = 2.0**(-np.linspace(3, 11, 15)) # mutation rate
 g=2; # number of opinions
 max_steps = 10**6
 realizations = np.arange(0,10)

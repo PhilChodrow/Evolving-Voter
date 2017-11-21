@@ -169,7 +169,8 @@ bool Dynamic_Voter::swap_delete(vector<Node>::iterator person_it, vector<vector<
 double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_steps, string process) {
 	long int e1;
 	double step=0;
-	int i,j,k;
+	// int i,j,k;
+	int i,j;
 	vector<Edge>::iterator edge_it;
 	int action=-1; //0:adapt, 1:rewire
 	ofstream pFile_process;
@@ -182,10 +183,10 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 		for (i=0;i<(int)sites.size();i++)
 			for (j=i;j<(int)sites.size();j++)
 				pFile_process<<"N"<<i<<j<<" ";
-		for (i=0;i<(int)sites.size();i++)
-			for (j=0;j<(int)sites.size();j++)
-				for (k=i;k<(int)sites.size();k++)
-					pFile_process<<"N"<<i<<j<<k<<" ";
+		// for (i=0;i<(int)sites.size();i++)
+		// 	for (j=0;j<(int)sites.size();j++)
+		// 		for (k=i;k<(int)sites.size();k++)
+		// 			pFile_process<<"N"<<i<<j<<k<<" ";
 		pFile_process<<endl;
 
 		pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<< " ";
@@ -338,7 +339,7 @@ void Dynamic_Voter::print_statistics_simple(ofstream &pFile_process) {
 }
 
 void Dynamic_Voter::print_statistics_triple(ofstream &pFile_process) {
-    int i,j,k;
+    int i,j;
 	vector<Node>::iterator person_it,person_it1,person_it2;
 	vector<Edge>::iterator edge_it;
 	list<vector<Edge>::iterator>::iterator neigh_edge_it1, neigh_edge_it2;
@@ -350,13 +351,13 @@ void Dynamic_Voter::print_statistics_triple(ofstream &pFile_process) {
         for (j=0;j<(int)sites.size();j++)
             N_edges[i][j]=0;}
 
-    long int ***N_triples=new long int** [sites.size()];
-    for (i=0;i<(int)sites.size();i++) {
-        N_triples[i]=new long int* [sites.size()];
-        for (j=0;j<(int)sites.size();j++) {
-            N_triples[i][j]=new long int [sites.size()];
-            for (k=0;k<(int)sites.size();k++)
-                N_triples[i][j][k]=0;}}
+    // long int ***N_triples=new long int** [sites.size()];
+    // for (i=0;i<(int)sites.size();i++) {
+    //     N_triples[i]=new long int* [sites.size()];
+    //     for (j=0;j<(int)sites.size();j++) {
+    //         N_triples[i][j]=new long int [sites.size()];
+    //         for (k=0;k<(int)sites.size();k++)
+    //             N_triples[i][j][k]=0;}}
 
     for (person_it = population.begin(); person_it != population.end(); person_it++) {
         for (i=0;i<(int)sites.size();i++)
@@ -369,11 +370,12 @@ void Dynamic_Voter::print_statistics_triple(ofstream &pFile_process) {
             d[person_it1->state]++;}
         for (i=person_it->state;i<(int)sites.size();i++)
             N_edges[person_it->state][i]+=d[i];
-        for (i=0;i<(int)sites.size();i++)
-            N_triples[i][person_it->state][i]+=d[i]*(d[i]-1);
-        for (i=0;i<(int)sites.size();i++)
-            for (j=i+1;j<(int)sites.size();j++)
-                N_triples[i][person_it->state][j]+=(d[i])*(d[j]); }
+        // for (i=0;i<(int)sites.size();i++)
+        //     N_triples[i][person_it->state][i]+=d[i]*(d[i]-1);
+        // for (i=0;i<(int)sites.size();i++)
+        //     for (j=i+1;j<(int)sites.size();j++)
+        //         N_triples[i][person_it->state][j]+=(d[i])*(d[j]); }
+    }
 
     for (j=0; j<(int)sites.size(); j++)
 		pFile_process<<sites[j].size()<<" ";
@@ -382,19 +384,20 @@ void Dynamic_Voter::print_statistics_triple(ofstream &pFile_process) {
 		for (j=i; j<(int)sites.size(); j++)
 			pFile_process<<N_edges[i][j]<<" ";
 
-	for (i=0; i<(int)sites.size(); i++)
-		for (j=0; j<(int)sites.size(); j++)
-			for (k=i; k<(int)sites.size(); k++)
-				pFile_process<<N_triples[i][j][k]<<" ";
+	// for (i=0; i<(int)sites.size(); i++)
+	// 	for (j=0; j<(int)sites.size(); j++)
+	// 		for (k=i; k<(int)sites.size(); k++)
+	// 			pFile_process<<N_triples[i][j][k]<<" ";
 
     pFile_process<<endl;
 
 	delete[] d;
 	for (i=0;i<(int)sites.size();i++) {
 		delete[] N_edges[i];
-		for (j=0;j<(int)sites.size();j++) {
-			delete[] N_triples[i][j]; }
-		delete[] N_triples[i]; }
+		// for (j=0;j<(int)sites.size();j++) {
+		// 	delete[] N_triples[i][j]; }
+		// delete[] N_triples[i]; }
+	}
 	delete[] N_edges;
-	delete[] N_triples;
+	// delete[] N_triples;
 }

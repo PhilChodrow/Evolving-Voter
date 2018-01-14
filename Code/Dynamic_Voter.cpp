@@ -166,8 +166,8 @@ bool Dynamic_Voter::swap_delete(vector<Node>::iterator person_it, vector<vector<
 	return true;
 }
 
-double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_steps, string process) {
-	long int e1;
+double Dynamic_Voter::simulate(int mode, float alpha, float lambda, int dt, double max_steps, string process) {
+	long int e1,e0;
 	double step=0;
 	// int i,j,k;
 	int i,j;
@@ -175,9 +175,10 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 	int action=-1; //0:adapt, 1:rewire
 	ofstream pFile_process;
 
+	
 	if (!process.empty()) {
 		pFile_process.open(process.c_str());
-		pFile_process<<"step action alpha lambda ";
+		pFile_process<<"step action alpha lambda N01_prev ";
 		for (j=0; j< (int)sites.size(); j++)
 			pFile_process<<"N"<<j<<" ";
 		for (i=0;i<(int)sites.size();i++)
@@ -188,12 +189,15 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 		// 		for (k=i;k<(int)sites.size();k++)
 		// 			pFile_process<<"N"<<i<<j<<k<<" ";
 		pFile_process<<endl;
-
-		pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<< " ";
+        
+        e0 = edge_boundary.size();
+		pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<< " "<<e0<<" ";
 		print_statistics_triple(pFile_process);
     }
 
 	while (  (max_steps<0 || step<max_steps) ) {
+	    action=-1; // default is pass
+	    e0 = edge_boundary.size();
         if (random_number.real()<lambda) {
             //mutation model
             e1 = random_number.integer(population.size());
@@ -206,7 +210,12 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 	    		edge_it=edge_boundary[e1];
 	    		if (random_number.real()<alpha) {
 	                action=1;
-	    			rand_rewire(edge_it);
+                    if (mode == 0){
+                        rand_rewire(edge_it);
+                    }
+                    else if (mode == 1){
+                        pref_rewire(edge_it);
+                    }
 	            }
 	    		else {
 	                action=0;
@@ -217,7 +226,7 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 		step++;
         if ((long int)step%dt==0) {
             if (pFile_process.is_open()) {
-                pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<<" ";
+                pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<<" "<<e0<<" ";
                 print_statistics_triple(pFile_process);
             }
         }
@@ -225,7 +234,7 @@ double Dynamic_Voter::simulate(float alpha, float lambda, int dt, double max_ste
 
     if ((long int)step%dt!=0) {
         if (pFile_process.is_open()) {
-    		pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<<" ";
+    		pFile_process<<step<<" "<<action<<" "<<alpha<<" "<<lambda<<" "<<e0<<" ";
     		print_statistics_triple(pFile_process);
     		pFile_process.close();
         }
@@ -331,6 +340,37 @@ int Dynamic_Voter::rand_rewire(vector<Edge>::iterator edge_it){
 	add_edge(i1, i2);
 
 	return 0;
+}
+
+bool Dynamic_Voter::pref_rewire(vector<Edge>::iterator edge_it){
+	vector<Node>::iterator person1_it, person2_it;
+	long int i1, i2;
+	int counter=0;
+	bool need_new_neigh=true;
+
+	person1_it = edge_it->person1;
+	person2_it = edge_it->person2;
+	// swap roles of the two people, but need to note this!
+	if (random_number.real() < 0.5) {
+		person1_it = edge_it->person2;
+		person2_it = edge_it->person1;}
+
+	// remove edge between person 1 and person 2
+	// then form list between person 1 and person x
+	// x chosen at random from the same group as person 1
+	i1 = person1_it->ID;
+	while (need_new_neigh && counter<10){
+		i2 = random_number.integer(sites[person1_it->state].size());
+		i2 = (sites[person1_it->state][i2])->ID;
+		need_new_neigh = (i1==i2) || is_neighbor(i1, i2);
+		counter++;}
+
+	if (need_new_neigh == false){
+		delete_edge(edge_it);
+		add_edge(i1, i2);
+		return true;}
+	else
+		return false;
 }
 
 void Dynamic_Voter::print_statistics_simple(ofstream &pFile_process) {

@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 	long int number_of_nodes, number_of_edges;
 	double steps, max_steps;
 	float alpha, lambda;
-	int dt, i,j, number_of_opinions;
+	int dt, i, number_of_opinions, mode;
 	vector<float> initial_density;
 	clock_t t_start;
 	string s,process, filename="evolving_voter";
@@ -34,6 +34,7 @@ int main(int argc, char* argv[]) {
     lambda=0.1;
     dt=1;
     max_steps=-1;
+    mode = 0;
 	if(argc>1){
 		for (i = 1; i < argc; i++){
 			if (!strcmp(argv[i],"-n")){
@@ -44,31 +45,39 @@ int main(int argc, char* argv[]) {
 				number_of_edges=atol(argv[i]);}
 			else if (!strcmp(argv[i],"-u")){
 				i++;
-				number_of_opinions=atoi(argv[i]);
-				initial_density.clear();
-				for (j=0; j<number_of_opinions; j++){
-					i++;
-					initial_density.push_back(atof(argv[i]));}}
+                initial_density.clear();
+                initial_density.push_back(atof(argv[i]));
+                initial_density.push_back(1.0-atof(argv[i]));}                 
+//				number_of_opinions=atoi(argv[i]);
+//				initial_density.clear();
+//				for (j=0; j<number_of_opinions; j++){
+//					i++;
+//					initial_density.push_back(atof(argv[i]));}}
 			else if (!strcmp(argv[i],"-a")){
 				i++;
 				alpha=atof(argv[i]);}
-            else if (!strcmp(argv[i],"-t")){
-    			i++;
-    			dt=atoi(argv[i]);}
-            else if (!strcmp(argv[i],"-T")){
+			else if (!strcmp(argv[i],"-t")){
+				i++;
+				dt=atoi(argv[i]);}
+			else if (!strcmp(argv[i],"-T")){
 				i++;
 				max_steps=atof(argv[i]);}
-            else if (!strcmp(argv[i],"-o")){
+			else if (!strcmp(argv[i],"-o")){
 				i++;
 				filename=argv[i];}
-            else if (!strcmp(argv[i],"-l")){
+			else if (!strcmp(argv[i],"-l")){
 				i++;
 				lambda=atof(argv[i]);}
+			else if (!strcmp(argv[i],"-M")){
+				i++;
+				mode=atoi(argv[i]);}
 			else {
 				cout<<"unknown parameter: "<<argv[i]<<endl;
 				exit(1);}
 		}
 	}
+    
+
 
 	// summary of the simulation
 	filename = filename + ".summary";
@@ -89,7 +98,7 @@ int main(int argc, char* argv[]) {
 	Dynamic_Voter *dv = new Dynamic_Voter();
     dv->ER_network(number_of_nodes,number_of_edges,number_of_opinions);
 	dv->assign_states(initial_density);
-	steps = dv->simulate(alpha,lambda,dt,max_steps,process);
+	steps = dv->simulate(mode, alpha, lambda, dt, max_steps, process);
 	outfile <<number_of_nodes<<" "<<number_of_edges<<" "<< alpha <<" " << lambda <<" ";
 	for (i=0; i<number_of_opinions; i++)
 		outfile << dv->sites[i].size() <<" ";
